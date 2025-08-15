@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_module_filter_custom" model="ir.ui.view">
+            <field name="name">ir.module.module.search</field>
+            <field name="model">ir.module.module</field>
+             <field name="inherit_id" ref="base.view_module_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='installed']" position="after">
+                    <filter name="favorite_apps_filter" string="Favorite Apps" domain="[('favo_module','=',True)]"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="module_view_kanban" model="ir.ui.view">
+            <field name="name">apps.kanban</field>
+            <field name="model">ir.module.module</field>
+            <field name="inherit_id" ref="base.module_view_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban" position="attributes">
+                    <attribute name="default_order">favo_module desc</attribute>
+                </xpath>
+                <xpath expr="//kanban/templates/t[@t-name='menu']">
+                    <div role="separator" class="dropdown-divider"/>
+                    <a role="menuitem" class="dropdown-item" type="object" name="action_toggle_favo">
+                        <span>Favorite App </span>
+                        <field name="favo_module" widget="boolean_toggle" />
+                    </a>
+                </xpath>
+                <xpath expr="//kanban/templates/t[@t-name='card']/main/field" position="before" >
+                    <widget t-if="record.favo_module.raw_value" name="web_ribbon" text="Favorite" bg_color="text-bg-primary"/>
+                </xpath>
+                <xpath expr="//kanban/templates/t[@t-name='card']/main/footer" position="inside">
+                    <div t-if="record.state.raw_value == 'installed'" class="justify-content-between d-flex" >
+                        <a  type="object" class="btn btn-secondary btn-sm" role="button" name="button_immediate_upgrade"  groups="base.group_system" title="Local App Upgrade">Upgrade</a>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_favorite_modules_kanban" model="ir.actions.act_window">
+            <field name="name">favorite.modules</field>
+            <field name="res_model">ir.module.module</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{'search_default_favorite_apps_filter': 1}</field>
+            <field name="search_view_id" ref="base.view_module_filter"/>
+        </record>
+
+        <menuitem id="fav_apps" name="Favorite Apps" parent="base.menu_management" sequence="101" action="action_favorite_modules_kanban"/>
+
+    </data>
+</odoo>
