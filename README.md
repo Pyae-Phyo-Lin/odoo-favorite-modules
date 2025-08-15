@@ -1,7 +1,7 @@
 # odoo-favorite-modules
 Easily add any Odoo module as a favorite and filter favorite apps
 
-I created this module while doing Odoo exercises, as I often needed to search for app names repeatedly for upgrades. To make the process faster, I added a "Favorites" feature.
+I created this module while doing Odoo practice modules, as I often needed to search for app names repeatedly for upgrades. To make the process faster, I added a "Favorites" feature.
 
 **[Get it on the Odoo Apps Store](https://apps.odoo.com/apps/modules/18.0/odoo-favorite-modules)**
 <br><br>
